@@ -1,6 +1,6 @@
 "use client";
 
-import { workspaceSchema } from "@/app/schemas/workspace";
+import { workspaceSchema, WorkspaceSchemaType } from "@/app/schemas/workspace";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,13 +23,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { orpc } from "@/lib/orpc";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function CreateWorkspace() {
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const form = useForm({
     resolver: zodResolver(workspaceSchema),
@@ -38,8 +42,28 @@ export function CreateWorkspace() {
     },
   });
 
-  function onSubmit() {
-    console.log("data");
+  const createWorkspaceMutation = useMutation(
+    orpc.workspace.create.mutationOptions({
+      onSuccess: (newWorkspace) => {
+        toast.success(
+          `Workspace ${newWorkspace.workspaceName} created successfully`,
+        );
+
+        queryClient.invalidateQueries({
+          queryKey: orpc.workspace.list.queryKey(),
+        });
+
+        form.reset();
+        setOpen(false);
+      },
+      onError: () => {
+        toast.error("Failed to create workspace, try again!");
+      },
+    }),
+  );
+
+  function onSubmit(values: WorkspaceSchemaType) {
+    createWorkspaceMutation.mutate(values);
   }
 
   return (
@@ -77,7 +101,11 @@ export function CreateWorkspace() {
             </FieldContent>
             <FieldError errors={[form.formState.errors.name]} />
           </Field>
-          <Button type="submit">Create Workspace</Button>
+          <Button type="submit" disabled={createWorkspaceMutation.isPending}>
+            {createWorkspaceMutation.isPending
+              ? "Creating..."
+              : "Create Workspace"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
