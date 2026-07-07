@@ -17,6 +17,8 @@
     "@orpc/client": "^1.14.6",
     "@orpc/server": "^1.14.6",
     "@orpc/tanstack-query": "^1.14.6",
+    "@prisma/adapter-neon": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "@tanstack/react-query": "^5.101.2",
     "@tanstack/react-query-devtools": "^5.101.2",
     "class-variance-authority": "^0.7.1",
@@ -41,8 +43,10 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
