@@ -2,8 +2,7 @@
 import Link from "next/link";
 import Logo from "@/public/logo.png";
 import { Menu, X } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import React from "react";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -12,6 +11,7 @@ import {
   LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useEffect, useState } from "react";
 
 const menuItems = [
   { name: "Features", href: "#link" },
@@ -21,12 +21,12 @@ const menuItems = [
 ];
 
 export const HeroHeader = () => {
-  const [menuState, setMenuState] = React.useState(false);
-  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [menuState, setMenuState] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { getUser, isLoading } = useKindeBrowserClient();
   const user = getUser();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };

@@ -10,7 +10,7 @@ import type {
   Variant,
   Variants,
 } from 'motion/react'
-import React from 'react';
+import { memo } from 'react';
 
 export type PresetType = 'blur' | 'fade-in-blur' | 'scale' | 'fade' | 'slide';
 
@@ -116,7 +116,7 @@ const AnimationComponent: React.FC<{
   variants: Variants;
   per: 'line' | 'word' | 'char';
   segmentWrapperClassName?: string;
-}> = React.memo(({ segment, variants, per, segmentWrapperClassName }) => {
+}> = memo(({ segment, variants, per, segmentWrapperClassName }) => {
   const content =
     per === 'line' ? (
       <motion.span variants={variants} className='block'>
