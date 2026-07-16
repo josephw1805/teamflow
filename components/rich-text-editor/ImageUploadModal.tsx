@@ -2,7 +2,7 @@ import { UploadDropzone } from "@/lib/uploadthing";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { toast } from "sonner";
 
-interface iAppProps {
+interface ImageUploadModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onUploaded: (url: string) => void;
@@ -12,7 +12,7 @@ export function ImageUploadModal({
   open,
   onOpenChange,
   onUploaded,
-}: iAppProps) {
+}: ImageUploadModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>

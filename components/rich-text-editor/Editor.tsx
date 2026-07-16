@@ -5,13 +5,13 @@ import { editorExtensions } from "./extensions";
 import { MenuBar } from "./MenuBar";
 import { ReactNode } from "react";
 
-interface iAppProps {
+interface RichTextEditorProps {
   field: any;
   sendButton: ReactNode;
   footerLeft?: ReactNode;
 }
 
-export function RichTextEditor({ field, sendButton, footerLeft }: iAppProps) {
+export function RichTextEditor({ field, sendButton, footerLeft }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: editorExtensions,
     immediatelyRender: false,
