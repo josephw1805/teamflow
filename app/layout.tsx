@@ -6,6 +6,9 @@ import { AuthProvider } from "@/components/ui/AuthProvider";
 import "@/lib/orpc.server"; // prerendering for ssr
 import { Providers } from "@/lib/providers";
 import { Toaster } from "@/components/ui/sonner";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +37,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
       <body className="min-h-full flex flex-col">
         <ThemeProvider
           attribute="class"

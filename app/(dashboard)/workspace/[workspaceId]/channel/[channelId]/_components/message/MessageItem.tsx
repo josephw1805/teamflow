@@ -3,11 +3,11 @@ import { Message } from "@/lib/generated/prisma/client";
 import { getAvatar } from "@/lib/get-avatar";
 import Image from "next/image";
 
-interface iAppProps {
+interface MessageItemProps {
   message: Message;
 }
 
-export function MessageItem({ message }: iAppProps) {
+export function MessageItem({ message }: MessageItemProps) {
   return (
     <div className="flex space-x-3 relative p-3 rounded-lg group hover:bg-muted/50">
       <Image

@@ -5,7 +5,7 @@ import { UseAttachmentUploadType } from "@/hooks/use-attachment-upload";
 import { ImageIcon, Send } from "lucide-react";
 import { AttachmentChip } from "./AttachmentChip";
 
-interface iAppProps {
+interface MessageComposerProps {
   value: string;
   onChange: (next: string) => void;
   onSubmit: () => void;
@@ -19,7 +19,7 @@ export function MessageComposer({
   onSubmit,
   isSubmitting,
   upload,
-}: iAppProps) {
+}: MessageComposerProps) {
   return (
     <>
       <RichTextEditor

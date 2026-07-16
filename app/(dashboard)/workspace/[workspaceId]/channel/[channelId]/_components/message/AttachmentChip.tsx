@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import Image from "next/image";
 
-interface iAppProps {
+interface AttachmentChipProps {
   url: string;
   onRemove: () => void;
 }
 
-export function AttachmentChip({ url, onRemove }: iAppProps) {
+export function AttachmentChip({ url, onRemove }: AttachmentChipProps) {
   return (
     <div className="group relative overflow-hidden rounded-md bg-muted size-12">
       <Image src={url} alt="Attachment" fill className="object-cover" />

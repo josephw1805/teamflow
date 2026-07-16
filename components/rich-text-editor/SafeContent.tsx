@@ -3,12 +3,12 @@ import { type JSONContent } from "@tiptap/react";
 import DOMpurify from "dompurify";
 import parse from "html-react-parser";
 
-interface iAppProps {
+interface SafeContentProps {
   content: JSONContent;
   className?: string;
 }
 
-export function SafeContent({ content, className }: iAppProps) {
+export function SafeContent({ content, className }: SafeContentProps) {
   const html = convertJsonToHtml(content);
 
   const clean = DOMpurify.sanitize(html);

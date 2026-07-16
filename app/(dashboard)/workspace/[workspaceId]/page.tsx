@@ -12,11 +12,11 @@ import { Cloud } from "lucide-react";
 import { redirect } from "next/navigation";
 import { CreateNewChannel } from "./_components/CreateNewChannel";
 
-interface iAppProps {
+interface WorkspaceProps {
   params: Promise<{ workspaceId: string }>;
 }
 
-const WorkspaceidPage = async ({ params }: iAppProps) => {
+const WorkspaceidPage = async ({ params }: WorkspaceProps) => {
   const { workspaceId } = await params;
   const { channels } = await client.channel.list();
 
