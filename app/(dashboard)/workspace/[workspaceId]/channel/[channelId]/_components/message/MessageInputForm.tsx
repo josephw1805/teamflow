@@ -70,6 +70,7 @@ export function MessageInputForm({ channelId, user }: MessageInputFormProps) {
           authorName: user.given_name ?? "",
           authroAvatar: getAvatar(user.picture, user.email ?? ""),
           channelId,
+          threadId: data.threadId ?? "",
         };
 
         queryClient.setQueryData<InfiniteMessages>(
