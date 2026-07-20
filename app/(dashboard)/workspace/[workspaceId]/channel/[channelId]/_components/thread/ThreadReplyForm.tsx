@@ -15,7 +15,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { orpc } from "@/lib/orpc";
-import { Message } from "@/lib/generated/prisma/client";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs";
 import { getAvatar } from "@/lib/get-avatar";
 import { MessageListItem } from "@/lib/types";
@@ -63,7 +62,7 @@ export function ThreadReplyForm({ threadId, user }: ThreadReplyFormProps) {
 
         const previous = queryClient.getQueryData(listOptions.queryKey);
 
-        const optimistic: Message = {
+        const optimistic: MessageListItem = {
           id: `optimistic-${crypto.randomUUID()}`,
           content: data.content,
           createdAt: new Date(),
@@ -75,6 +74,8 @@ export function ThreadReplyForm({ threadId, user }: ThreadReplyFormProps) {
           channelId: data.channelId,
           threadId: data.threadId ?? "",
           imageUrl: data.imageUrl ?? null,
+          reactions: [],
+          replyCount: 0,
         };
 
         queryClient.setQueryData(listOptions.queryKey, (existingData) => {
@@ -94,7 +95,7 @@ export function ThreadReplyForm({ threadId, user }: ThreadReplyFormProps) {
               ...page,
               items: page.items.map((message) =>
                 message.id === threadId
-                  ? { ...message, repliesCount: message.repliesCount + 1 }
+                  ? { ...message, replyCount: message.replyCount + 1 }
                   : message,
               ),
             }));
