@@ -17,9 +17,9 @@ import { orpc } from "@/lib/orpc";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useAttachmentUpload } from "@/hooks/use-attachment-upload";
-import { Message } from "@/lib/generated/prisma/client";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs";
 import { getAvatar } from "@/lib/get-avatar";
+import { MessageListItem } from "@/lib/types";
 
 interface MessageInputFormProps {
   channelId: string;
@@ -27,7 +27,7 @@ interface MessageInputFormProps {
 }
 
 type MessagePage = {
-  items: Message[];
+  items: MessageListItem[];
   nextCursor?: string;
 };
 type InfiniteMessages = InfiniteData<MessagePage>;
@@ -59,7 +59,7 @@ export function MessageInputForm({ channelId, user }: MessageInputFormProps) {
 
         const tempId = `optimistic-${crypto.randomUUID()}`;
 
-        const optimisticMessage: Message = {
+        const optimisticMessage: MessageListItem = {
           id: tempId,
           content: data.content,
           imageUrl: data.imageUrl ?? null,
@@ -71,6 +71,8 @@ export function MessageInputForm({ channelId, user }: MessageInputFormProps) {
           authroAvatar: getAvatar(user.picture, user.email ?? ""),
           channelId,
           threadId: data.threadId ?? "",
+          reactions: [],
+          replyCount: 0,
         };
 
         queryClient.setQueryData<InfiniteMessages>(
@@ -119,6 +121,8 @@ export function MessageInputForm({ channelId, user }: MessageInputFormProps) {
                 message.id === context.tempId
                   ? {
                       ...data,
+                      reactions: [],
+                      replyCount: 0,
                     }
                   : message,
               ),
