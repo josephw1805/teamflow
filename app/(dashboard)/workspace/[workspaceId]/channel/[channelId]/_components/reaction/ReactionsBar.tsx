@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { MessageListItem } from "@/lib/types";
+import { useChannelRealtime } from "@/providers/ChannelRealtimeProvider";
 
 type ThreadContext = { type: "thread"; threadId: string };
 type ListContext = { type: "list"; channelId: string };
@@ -34,6 +35,7 @@ export function ReactionsBar({
 }: ReactionsBarProps) {
   const { channelId } = useParams<{ channelId: string }>();
   const queryClient = useQueryClient();
+  const { send } = useChannelRealtime();
 
   const toggleMutation = useMutation(
     orpc.message.reactions.toggle.mutationOptions({
@@ -132,7 +134,12 @@ export function ReactionsBar({
           listKey,
         };
       },
-      onSuccess: () => {},
+      onSuccess: (data) => {
+        send({
+          type: "reaction:updated",
+          payload: data,
+        });
+      },
       onError: (_err, _var, ctx) => {
         if (ctx?.threadQueryKey && ctx.prevThread) {
           queryClient.setQueryData(ctx.threadQueryKey, ctx.prevThread);
