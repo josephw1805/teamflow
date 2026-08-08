@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import { Message } from "@/lib/generated/prisma/client";
 import { orpc } from "@/lib/orpc";
+import { useChannelRealtime } from "@/providers/ChannelRealtimeProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   InfiniteData,
@@ -24,6 +25,7 @@ interface EditMessageProps {
 
 export function EditMessage({ message, onCancel, onSave }: EditMessageProps) {
   const queryClient = useQueryClient();
+  const { send } = useChannelRealtime();
   const form = useForm({
     resolver: zodResolver(updateMessageSchema),
     defaultValues: {
@@ -58,6 +60,10 @@ export function EditMessage({ message, onCancel, onSave }: EditMessageProps) {
             };
           },
         );
+        send({
+          type: "message:updated",
+          payload: { message: updated.message },
+        });
         onSave();
       },
       onError: (error) => {

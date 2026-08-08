@@ -20,6 +20,7 @@ import { useAttachmentUpload } from "@/hooks/use-attachment-upload";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs";
 import { getAvatar } from "@/lib/get-avatar";
 import { MessageListItem } from "@/lib/types";
+import { useChannelRealtime } from "@/providers/ChannelRealtimeProvider";
 
 interface MessageInputFormProps {
   channelId: string;
@@ -36,6 +37,7 @@ export function MessageInputForm({ channelId, user }: MessageInputFormProps) {
   const queryClient = useQueryClient();
   const [editorKey, setEditorKey] = useState(0);
   const upload = useAttachmentUpload();
+  const { send } = useChannelRealtime();
 
   const form = useForm({
     resolver: zodResolver(createMessageSchema),
@@ -135,6 +137,7 @@ export function MessageInputForm({ channelId, user }: MessageInputFormProps) {
         form.reset({ channelId, content: "" });
         upload.clear();
         setEditorKey((k) => k + 1);
+        send({ type: "message:created", payload: { message: data } });
       },
       onError: (_err, _variables, context) => {
         if (context?.previousData) {
